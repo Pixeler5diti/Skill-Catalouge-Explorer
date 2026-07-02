@@ -181,20 +181,20 @@ class ConstraintAwareRetriever:
         # ── 2. Embedding recall ───────────────────────────────────────────────
         sem_scores: Dict[str, float] = {}
 
-        if has_signal:
+        #if has_signal:
             # Lazy import so SentenceTransformer is only loaded on first request,
             # not during Render startup.
-            from app.retrieval.embeddings import embed_query
+         #   from app.retrieval.embeddings import embed_query
 
-            q_vec = embed_query(query)
-            semantic_hits = self.vector_store.search(q_vec, pool_size)
+          #  q_vec = embed_query(query)
+           # semantic_hits = self.vector_store.search(q_vec, pool_size)
 
-            if semantic_hits:
-                max_sem = max(score for _, score in semantic_hits) or 1.0
-                sem_scores = {
-                    eid: score / max_sem
-                    for eid, score in semantic_hits
-                }
+            #if semantic_hits:
+             #   max_sem = max(score for _, score in semantic_hits) or 1.0
+              #  sem_scores = {
+               #     eid: score / max_sem
+                #    for eid, score in semantic_hits
+                #}
 
         # ── 3. Candidate pool ─────────────────────────────────────────────────
         # With a real query: union of top BM25 + top semantic.

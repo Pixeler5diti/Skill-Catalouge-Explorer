@@ -36,6 +36,6 @@ def embed_texts(texts: List[str], batch_size: int = 64) -> np.ndarray:
 
 def embed_query(text: str) -> np.ndarray:
     """Encode a single query string."""
-    # BGE recommends a query instruction prefix for retrieval
+    #BGE recommends a query instruction prefix for retrieval
     prefixed = f"Represent this sentence for searching relevant passages: {text}"
     return embed_texts([prefixed])[0]
