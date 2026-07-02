@@ -32,17 +32,34 @@ async def lifespan(app: FastAPI):
 
     logger.info(f"Catalog loaded successfully ({len(entries)} assessments).")
 
-    # 3. Load FAISS index ONLY
+    # 3. Load persisted FAISS index
     vector_store = VectorStore(settings.faiss_index_dir)
 
-    if vector_store.is_persisted():
-        logger.info("Loading persisted FAISS index...")
-        vector_store.load()
-        logger.info("FAISS index loaded successfully.")
-    else:
-        logger.warning("Persisted FAISS index not found.")
+    if not vector_store.is_persisted():
+        raise RuntimeError(
+            "Persisted FAISS index not found. Build it locally and commit "
+            "shl-api/data/faiss_index/index.faiss."
+        )
 
-    logger.info("Skipping embeddings, retriever and ChatEngine initialization for debugging.")
+    logger.info("Loading persisted FAISS index...")
+    vector_store.load()
+    logger.info("FAISS index loaded successfully.")
+
+    # 4. Create retriever
+    logger.info("Initializing retriever...")
+    from app.retrieval.retriever import ConstraintAwareRetriever
+
+    retriever = ConstraintAwareRetriever(entries, vector_store)
+    logger.info("Retriever initialized.")
+
+    # 5. Create chat engine
+    logger.info("Initializing ChatEngine...")
+    from app.conversation.chat_engine import ChatEngine
+
+    engine = ChatEngine(retriever, by_id, by_name)
+    logger.info("ChatEngine initialized.")
+
+    logger.info(f"Ready. Catalog size: {len(entries)} assessments.")
 
     yield
 
