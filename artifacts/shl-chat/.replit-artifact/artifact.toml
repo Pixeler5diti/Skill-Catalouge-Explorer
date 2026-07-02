@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "SHL Assessment Chat"
+version = "1.0.0"
+id = "artifacts/shl-chat"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23098
+
+[services.development]
+run = "pnpm --filter @workspace/shl-chat run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/shl-chat", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/shl-chat/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23098"
+BASE_PATH = "/"
