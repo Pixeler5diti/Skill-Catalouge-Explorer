@@ -18,12 +18,7 @@ class Settings(BaseSettings):
     embed_model: str = "BAAI/bge-small-en-v1.5"
 
     # ── Catalog ───────────────────────────────────────────────────────────
-    catalog_path: str = str(
-        _WORKSPACE_ROOT
-        / "attached_assets"
-        / "Pasted--entity-id-4302-name-Global-Skills-Development-Report-l_1782925068934.txt"
-    )
-
+    catalog_path: str = str(_WORKSPACE_ROOT / "catalog.json")
     # ── FAISS index persistence ────────────────────────────────────────────
     faiss_index_dir: str = str(Path(__file__).parent.parent / "data" / "faiss_index")
 
