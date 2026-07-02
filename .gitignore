@@ -57,5 +57,6 @@ venv/
 
 # FAISS indexes (optional)
 *.faiss
+!shl-api/data/faiss_index/index.faiss
 *.pkl.env
 .agents/
