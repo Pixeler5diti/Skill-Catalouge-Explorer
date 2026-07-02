@@ -11,9 +11,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.catalog.loader import load_catalog
 from app.catalog.preprocess import preprocess_catalog
+from app.retrieval.vectorstore import VectorStore
 from app.utils.logger import logger
 
-# Keep the type hint generic for now
+# Global engine (still disabled)
 engine = None
 
 
@@ -30,7 +31,18 @@ async def lifespan(app: FastAPI):
     entries, by_id, by_name = preprocess_catalog(raw_entries)
 
     logger.info(f"Catalog loaded successfully ({len(entries)} assessments).")
-    logger.info("Skipping FAISS, embeddings and ChatEngine initialization for debugging.")
+
+    # 3. Load FAISS index ONLY
+    vector_store = VectorStore(settings.faiss_index_dir)
+
+    if vector_store.is_persisted():
+        logger.info("Loading persisted FAISS index...")
+        vector_store.load()
+        logger.info("FAISS index loaded successfully.")
+    else:
+        logger.warning("Persisted FAISS index not found.")
+
+    logger.info("Skipping embeddings, retriever and ChatEngine initialization for debugging.")
 
     yield
 
