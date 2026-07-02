@@ -25,7 +25,7 @@ from rank_bm25 import BM25Okapi
 
 from app.schemas import AssessmentEntry
 from app.retrieval.vectorstore import VectorStore
-from app.retrieval.embeddings import embed_query
+
 from app.config import settings
 from app.utils.logger import logger
 
@@ -180,12 +180,21 @@ class ConstraintAwareRetriever:
 
         # ── 2. Embedding recall ───────────────────────────────────────────────
         sem_scores: Dict[str, float] = {}
+
         if has_signal:
+            # Lazy import so SentenceTransformer is only loaded on first request,
+            # not during Render startup.
+            from app.retrieval.embeddings import embed_query
+
             q_vec = embed_query(query)
             semantic_hits = self.vector_store.search(q_vec, pool_size)
+
             if semantic_hits:
-                max_sem = max(s for _, s in semantic_hits) or 1.0
-                sem_scores = {eid: s / max_sem for eid, s in semantic_hits}
+                max_sem = max(score for _, score in semantic_hits) or 1.0
+                sem_scores = {
+                    eid: score / max_sem
+                    for eid, score in semantic_hits
+                }
 
         # ── 3. Candidate pool ─────────────────────────────────────────────────
         # With a real query: union of top BM25 + top semantic.
