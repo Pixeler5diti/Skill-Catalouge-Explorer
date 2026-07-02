@@ -10,7 +10,6 @@ import faiss
 from pathlib import Path
 from typing import List, Tuple
 from app.schemas import AssessmentEntry
-from app.retrieval.embeddings import embed_texts
 from app.utils.logger import logger
 
 
@@ -50,6 +49,7 @@ class VectorStore:
 
     def build(self, entries: List[AssessmentEntry]) -> None:
         """Build FAISS index from catalog entries and persist to disk."""
+        from app.retrieval.embeddings import embed_texts
         logger.info(f"Building FAISS index for {len(entries)} entries…")
         texts = [e.searchable_text for e in entries]
         self.entity_ids = [e.entity_id for e in entries]
