@@ -167,45 +167,6 @@ git push
 
 ---
 
-## Deploying
-
-The two services deploy independently because one is Python and one is Node/static.
-
-### Python API → Render (recommended)
-
-1. Push to GitHub
-2. Go to [render.com](https://render.com) → **New Web Service** → connect your repo
-3. Set **Root Directory** to `shl-api`
-4. Set **Build Command**: `pip install -r requirements.txt`
-5. Set **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-6. Add environment variables in Render's dashboard:
-   - `GROQ_API_KEY` = your key
-   - `CATALOG_PATH` = `/opt/render/project/src/catalog.json` *(after uploading catalog)*
-7. Upload the catalog file to your repo or use Render's persistent disk
-
-### Python API → Docker (anywhere)
-
-```bash
-cd shl-api
-docker build -t shl-api .
-docker run -e GROQ_API_KEY=your_key -e CATALOG_PATH=/data/catalog.json \
-  -v $(pwd)/catalog.json:/data/catalog.json \
-  -p 8000:8000 shl-api
-```
-
-### Frontend → any static host (Vercel, Netlify, GitHub Pages)
-
-```bash
-# Build the frontend
-VITE_SHL_API_URL=https://your-deployed-api.com pnpm --filter @workspace/shl-chat run build
-# Output is in artifacts/shl-chat/dist/public/
-```
-
-Point your host at `artifacts/shl-chat/dist/public/` and configure all routes to serve `index.html`.
-
-> Set `VITE_SHL_API_URL` to your deployed Python API URL so the frontend knows where to send requests.
-
----
 
 ## Running tests
 
