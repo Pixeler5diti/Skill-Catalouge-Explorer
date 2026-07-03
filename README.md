@@ -55,10 +55,7 @@ GROQ_API_KEY=gsk_your_key_here          # get free at console.groq.com
 CATALOG_PATH=catalog.json               # see note below
 ```
 
-> **Catalog file:** copy the long `.txt` file from `attached_assets/` into `shl-api/` and rename it:
-> ```bash
-> cp attached_assets/Pasted--entity-id-4302-name-Global-Skills-Development-Report-l_1782925068934.txt shl-api/catalog.json
-> ```
+
 
 ```bash
 # Start the API (from inside shl-api/)
