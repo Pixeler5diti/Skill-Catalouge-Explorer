@@ -17,6 +17,8 @@ export interface Message {
 
 const BASE = import.meta.env.VITE_SHL_API_URL || '/shl-api';
 
+
+console.log("API BASE =", BASE);
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
