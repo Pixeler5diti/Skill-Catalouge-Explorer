@@ -13,7 +13,7 @@ A full-stack AI tool that recommends SHL psychometric assessments through a conv
 ```
 shl-api/                  ← Python FastAPI backend (the brains)
 artifacts/shl-chat/       ← React + Vite frontend (the chat UI)
-attached_assets/          ← SHL catalog JSON file (source of truth)
+shl-api/catalog.json      ← SHL catalog JSON file (source of truth)
 ```
 
 ---
