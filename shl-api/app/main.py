@@ -75,15 +75,7 @@ app = FastAPI(
 )
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://skill-catalouge-explorer-1.onrender.com",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

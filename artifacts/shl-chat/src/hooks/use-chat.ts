@@ -14,8 +14,9 @@ export interface Message {
   recommendations?: Recommendation[];
   isError?: boolean;
 }
+const BASE = import.meta.env.VITE_SHL_API_URL || "/shl-api";
 
-const BASE = import.meta.env.VITE_SHL_API_URL || '/shl-api';
+console.log("API BASE =", BASE);
 
 
 console.log("API BASE =", BASE);
