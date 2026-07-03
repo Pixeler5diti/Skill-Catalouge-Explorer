@@ -86,7 +86,55 @@ class ChatEngine:
         return extract_constraints(messages)
 
     # ── Retrieval pipeline ──────────────────────────────────────────────────────
+    def _retrieve_filter_rerank(
+    self,
+    query: str,
+    constraints: Dict[str, Any],
+    conflict: Optional[Conflict],
+    top_k_retrieve: int = 30,
+    top_k_return: Optional[int] = None,
+) -> List[AssessmentEntry]:
 
+    logger.info("========== RETRIEVAL ==========")
+    logger.info(f"Query: {query}")
+    logger.info(f"Constraints: {constraints}")
+
+    logger.info("Calling retriever.retrieve()")
+    candidates = self.retriever.retrieve(
+        query,
+        constraints=constraints,
+        top_k=top_k_retrieve,
+    )
+    logger.info(f"retriever.retrieve() returned {len(candidates)} candidates")
+
+    logger.info("Running apply_domain_rules()")
+    filtered = apply_domain_rules(
+        candidates,
+        constraints,
+        self.by_id,
+        conflict=conflict,
+    )
+    logger.info(f"apply_domain_rules() returned {len(filtered)}")
+
+    logger.info("Running rerank()")
+    ranked_ids = rerank(
+        filtered,
+        self.by_id,
+        constraints,
+        top_k=top_k_return or settings.top_k_return,
+    )
+    logger.info(f"rerank() returned {len(ranked_ids)} ids")
+
+    logger.info("Building AssessmentEntry list")
+    result = [
+        self.by_id[eid]
+        for eid in ranked_ids
+        if eid in self.by_id
+    ]
+
+    logger.info(f"Returning {len(result)} entries")
+
+    return result
     def _retrieve_filter_rerank(
         self,
         query: str,
