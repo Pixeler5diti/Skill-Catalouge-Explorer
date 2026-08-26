@@ -9,8 +9,8 @@ _WORKSPACE_ROOT = Path(__file__).parent.parent.parent
 class Settings(BaseSettings):
     # ── Groq ──────────────────────────────────────────────────────────────
     groq_api_key: str = ""
-    groq_model: str = "llama-3.3-70b-versatile"
-    groq_intent_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "gpt-5.4-mini"
+    groq_intent_model: str = "gpt-5.4-mini"
     groq_max_tokens: int = 1024
     groq_intent_max_tokens: int = 10  # classification only
 
