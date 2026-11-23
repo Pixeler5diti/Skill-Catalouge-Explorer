@@ -18,21 +18,21 @@ export function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div 
       className={cn(
-        "flex w-full px-4 py-6 md:px-6 animate-in fade-in slide-in-from-bottom-2 duration-300",
-        isUser ? "justify-end" : "justify-start bg-muted/30"
+        "flex w-full px-4 py-4 md:px-8 md:py-5 animate-in fade-in slide-in-from-bottom-2 duration-300",
+        isUser ? "justify-end" : "justify-start"
       )}
       data-testid={`chat-message-${message.role}`}
     >
       <div className={cn(
-        "flex gap-4 max-w-3xl w-full",
+        "flex gap-3 max-w-4xl w-full",
         isUser && "flex-row-reverse"
       )}>
         {/* Avatar */}
         <div className={cn(
-          "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ring-1",
+          "shrink-0 w-9 h-9 rounded-xl flex items-center justify-center",
           isUser 
-            ? "bg-primary text-primary-foreground ring-primary/20" 
-            : "bg-white text-primary ring-border shadow-sm dark:bg-card"
+            ? "bg-[#dce9c8] text-[#3e5b35]" 
+            : "bg-[#18352c] text-[#d7f06c] shadow-sm"
         )}>
           {isUser ? <User className="w-4 h-4" /> : <BrainCircuit className="w-4 h-4" />}
         </div>
@@ -44,13 +44,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
         )}>
           {/* Text Bubble */}
           <div className={cn(
-            "rounded-2xl px-4 py-3 text-[15px] leading-relaxed relative",
+            "rounded-2xl px-4 py-3 text-sm leading-7 relative",
             isUser 
-              ? "bg-primary text-primary-foreground rounded-tr-sm" 
-              : "bg-white border border-border/50 text-foreground rounded-tl-sm shadow-sm dark:bg-card",
-            message.isError && "bg-destructive/10 text-destructive border-destructive/20"
+              ? "bg-[#e7eedf] text-[#263c33] rounded-tr-md" 
+              : "bg-white/90 border border-[#e2e7df] text-[#35483f] rounded-tl-md shadow-[0_3px_14px_-10px_rgba(24,53,44,0.25)]",
+            message.isError && "bg-red-50 text-red-700 border-red-200"
           )}>
-            <div className="whitespace-pre-wrap break-words">
+            <div className="whitespace-pre-wrap wrap-break-word">
               {message.content}
             </div>
           </div>
